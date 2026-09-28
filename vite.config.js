@@ -19,6 +19,19 @@ export default defineConfig({
     }),
     vueDevTools(),
   ],
+  server: {
+  proxy: {
+    '/api': {
+      target: 'https://big-event-vue-api-t.itheima.net',
+      changeOrigin: true
+    },
+
+    '/my': {
+      target: 'https://big-event-vue-api-t.itheima.net',
+      changeOrigin: true
+    }
+  }
+},
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

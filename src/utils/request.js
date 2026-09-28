@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { useUserStore } from '@/stores'
-import { router } from '@/router'
-import { ELMessage } from 'element-plus'
+import  router  from '@/router/index'
+import { ElMessage } from 'element-plus'
 
-const baseURL = 'http://big-event-vue-api-t.itheima.net'
+const baseURL = ''
 
 const instance = axios.create({
   // TODO 1. 基础地址，超时时间
@@ -30,9 +30,9 @@ instance.interceptors.response.use(
     if(
       res.data.code === 0
     ) {
-      return res
+      return res.data
     }
-    ELMessage.error(res.data.message || '服务异常')
+    ElMessage.error(res.data.message || '服务异常')
     // 处理业务失败 给错误提示
     return Promise.reject(res.data)
   },
@@ -42,7 +42,7 @@ instance.interceptors.response.use(
       router.push('/login')
     }
     // 错误的默认情况
-    ELMessage.error(err.response.data. message || '服务异常')
+    ElMessage.error(err.response?.data?.message || '服务异常')
     // TODO 5. 处理401错误
     return Promise.reject(err)
   }

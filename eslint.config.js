@@ -20,11 +20,18 @@ export default defineConfig([
       },
     },
   },
-
   js.configs.recommended,
   ...pluginVue.configs['flat/essential'],
 
   ...pluginOxlint.buildFromOxlintConfigFile('.oxlintrc.json'),
 
   skipFormatting,
-])
+],
+module.exports = {
+  globals: {
+    ElMessage: 'readonly',
+    ElMessageBox: 'readonly',
+    ElLoading: 'readonly'
+  }
+}
+)
