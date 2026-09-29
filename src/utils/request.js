@@ -16,6 +16,7 @@ instance.interceptors.request.use(
     // TODO 2. 携带token
     const userStore = useUserStore()
     if(userStore.token) {
+      //console.log('发送请求的 token：', userStore.token)
       config.headers.Authorization =  userStore.token
     }
     return config

@@ -19,8 +19,13 @@ const router = useRouter()
 onMounted(() => {
   userStore.getUser()
 })
-const handleCommand = (key) => {
+const handleCommand = async(key) => {
   if(key === 'logout'){
+   await ElMessageBox.confirm('你确定要退出吗', {
+      type: 'warning',
+      confirmButtonText: '确认',
+      cancelButtonText: '取消'
+    })
     // 退出操作(清除本地数据 + token信息)
     userStore.removeToken()
     userStore.setUser({})

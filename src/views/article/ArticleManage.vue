@@ -1,15 +1,18 @@
+<script setup>
+</script>
 <template>
-  <div>
-我是文章管理
-<RouterView></RouterView>
-  </div>
-
+<page-container title="文章管理">
+  <!-- 父组件填坑 -->
+  <template #extra>
+    <el-button>测试按钮</el-button>
+  </template>
+ <!-- 表单区域 -->
+ <!-- 表格区域 -->
+</page-container>
 </template>
 
-<script setup>
+<script setup></script>
 
-</script>
-
-<style>
+<style lang="scss" scoped>
 
 </style>
