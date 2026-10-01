@@ -1,14 +1,7 @@
 <template>
-  <div>
-我是更换头像
-  </div>
-
+  <div>我是更换头像</div>
 </template>
 
-<script setup>
+<script setup></script>
 
-</script>
-
-<style>
-
-</style>
+<style></style>

@@ -9,7 +9,6 @@ export const useCountStore = defineStore('countStore', () => {
   }
   return {
     count,
-    add
+    add,
   }
-}
-)
+})

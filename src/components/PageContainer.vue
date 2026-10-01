@@ -2,8 +2,8 @@
 defineProps({
   title: {
     required: true,
-    type: String
-  }
+    type: String,
+  },
 })
 </script>
 
@@ -14,12 +14,12 @@ defineProps({
         <span>{{ title }}</span>
         <div class="extra">
           <!-- 子组件挖坑 -->
-         <slot name="extra"></slot>
+          <slot name="extra"></slot>
         </div>
       </div>
     </template>
     <slot></slot>
-   </el-card>
+  </el-card>
 </template>
 
 <style lang="scss" scoped>

@@ -18,18 +18,18 @@ getChannelList()
 </script>
 
 <template>
-<el-select
-  :modelValue="modelValue"
-  @update:modelValue="emit('update:modelValue', $event)"
-  style="width: 180px"
-  placeholder="请选择"
->
-  <el-option
-    v-for="channel in channelList"
-    :key="channel.id"
-    :label="channel.cate_name"
-    :value="channel.id"
+  <el-select
+    :modelValue="modelValue"
+    @update:modelValue="emit('update:modelValue', $event)"
+    style="width: 180px"
+    placeholder="请选择"
   >
-  </el-option>
-</el-select>
+    <el-option
+      v-for="channel in channelList"
+      :key="channel.id"
+      :label="channel.cate_name"
+      :value="channel.id"
+    >
+    </el-option>
+  </el-select>
 </template>

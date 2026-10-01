@@ -1,11 +1,14 @@
 <script setup>
 import ChannelSelect from './ChannelSelect.vue'
+import axios from 'axios'
 import { Plus } from '@element-plus/icons-vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import { nextTick } from 'vue'
 import { ref } from 'vue'
-import { artPublishService } from '@/api/article.js'
+import { artPublishService, artGetDetailService, artEditService } from '@/api/article.js'
 import { ElMessage } from 'element-plus'
+
 const emit = defineEmits(['success'])
 // 控制抽屉显示隐藏
 const visibleDrawer = ref(false)
@@ -38,13 +41,15 @@ const onPublish = async (state) => {
   // 发请求
   if (formModel.value.id) {
     // 编辑操作
-    console.log('编辑操作')
+    await artEditService(fd)
+    ElMessage.success('修改成功')
+    visibleDrawer.value = false
+    emit('success', 'edit')
   } else {
-    // 添加操作
+    // 添加请求
     await artPublishService(fd)
     ElMessage.success('添加成功')
     visibleDrawer.value = false
-    // 通知父组件 添加成功
     emit('success', 'add')
   }
 }
@@ -56,17 +61,47 @@ const formModel = ref({
 // open ({}) => 表单无需渲染 说明是添加
 // open ({ creat_name, id, ...}) => 表单需要渲染 说明是编辑
 const editorRef = ref()
-const open = (row) => {
+const open = async (row) => {
   visibleDrawer.value = true
   if (row.id) {
     // 需要基于 row.id 发送请求 获取对应编辑的详情数据 进行回显
+    const res = await artGetDetailService(row.id)
+    formModel.value = res.data
     // console.log('编辑回显')
+    // 图片需要单独处理
+    //  console.log(formModel.value)
+    imgUrl.value = 'https://big-event-vue-api-t.itheima.net' + formModel.value.cover_img
+    // 提交到后台的数据是file对象的格式
+    // 需要将网络图片地址 => 转化成file对象存储起来
+    const file = await imageUrlToFileObject(imgUrl.value, formModel.value.cover_img)
+    formModel.value.cover_img = file
   } else {
     formModel.value = { ...defaultForm } // 基于默认数据 重置form数据
     // console.log('添加')
     // 重置表单数据 图片上传img地址 和富文本编辑器内容需要手动重置
     imgUrl.value = ''
+    await nextTick()
     editorRef.value.setHTML('')
+  }
+}
+
+// 将网络图片地址转换为File对象
+async function imageUrlToFileObject(url, fileName) {
+  try {
+    // 第一步：使用axios获取网络图片数据
+    const response = await axios.get(url, { responseType: 'arraybuffer' })
+    const imageData = response.data
+
+    // 第二步：将图片数据转换为Blob对象
+    const blob = new Blob([imageData], { type: response.headers['content-type'] })
+
+    // 第三步：创建一个新的File对象
+    const file = new File([blob], fileName, { type: blob.type })
+
+    return file
+  } catch (error) {
+    console.error('将图片转换为File对象时发生错误:', error)
+    throw error
   }
 }
 defineExpose({
@@ -102,7 +137,7 @@ defineExpose({
       <el-form-item label="文章内容" prop="content">
         <div class="editor">
           <quill-editor
-          ref="editorRef"
+            ref="editorRef"
             v-model:content="formModel.content"
             content-type="html"
             theme="snow"

@@ -1,14 +1,7 @@
 <template>
-  <div>
-我是重置密码
-  </div>
-
+  <div>我是重置密码</div>
 </template>
 
-<script setup>
+<script setup></script>
 
-</script>
-
-<style>
-
-</style>
+<style></style>

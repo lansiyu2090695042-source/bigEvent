@@ -3,7 +3,7 @@ import { Delete, Edit } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import ChannelSelect from './components/ChannelSelect.vue'
 import ArticleEdit from './components/ArticleEdit.vue'
-import { artGetListService } from '@/api/article.js'
+import { artGetListService, artDelService } from '@/api/article.js'
 import { formatTime } from '@/utils/format.js'
 
 const articleList = ref([]) // 文章列表
@@ -63,13 +63,21 @@ const onEditArticle = (row) => {
   articleEditRef.value.open(row)
 }
 // 删除逻辑
-const onDelArticle = (row) => {
-  console.log(row)
+const onDelArticle = async (row) => {
+  await ElMessageBox.confirm('你确定要删除吗', '温馨提示', {
+    type: 'warning',
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+  })
+  await artDelService(row.id)
+  ElMessage.success('删除成功')
+  getArticleList()
 }
 // 添加或者编辑的回调
 const onSuccess = (type) => {
   if (type === 'add') {
-    params.value.pagenum = Math.ceil((total.value + 1) / params.value.pagesize)
+    const lastPage = Math.ceil((total.value + 1) / params.value.pagesize)
+    params.value.pagenum = lastPage
   }
   getArticleList()
 }
@@ -124,7 +132,7 @@ const onSuccess = (type) => {
             circle
             plain
             type="danger"
-            @click="onDeleteArticle(row)"
+            @click="onDelArticle(row)"
           ></el-button>
         </template>
       </el-table-column>
