@@ -1,0 +1,1 @@
+import{I as e,m as t,t as n}from"./_plugin-vue_export-helper-oSSPwIvM.js";var r={};function i(n,r){return e(),t(`div`,null,`我是更换头像`)}var a=n(r,[[`render`,i]]);export{a as default};
